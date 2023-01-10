@@ -8,7 +8,7 @@ import re
 import datetime
 import sys
 
-sap = SapGui()
+#sap = SapGui()
 
 
 
@@ -61,75 +61,7 @@ if opcao_classe == 'Analise MT':
         # fig = px.bar(bd_consumo_linha, x='Instalação',y=[['kWh_Mês1','kWh_Mês2',	'kWh_Mês3']],title='GRÁFICO DE CONSUMO kWh/Mês')
         # st.plotly_chart(fig, use_container_width=True)
     
-    st.title('ANALISE DE INSTALAÇÃO')
-    with st.container():
-        
-        lista_inspecao=[]
-        selecao =  st.selectbox('SELECIONE UMA OPÇÃO', ['ANALISE INDIVIDUAL', 'ANALISE EM MASSA'])
-        if selecao=='ANALISE INDIVIDUAL':
-            instalação = st.text_input("Insira um número de instalação", )
-            botao = st.button('Analisar Instalação')
-            if botao:
-                if instalação != '':
-                    erro = ''
-                    try:
-                        with st.spinner('BUSCANDO DADOS DO SAP'):
-                                erro=''
-                                sap.sap_login()
-                                retorno = sap.consultar_consumo(instalação)
-                                sap.fechar_sap()
-                                cliente = retorno[3].split('/')
-                                st.success('INFORMAÇOES CARREGADAS COM SUCESSO')
-                                
-                                st.write(f'Status da instalação: {retorno[2]}')
-                                st.write(f'Cliente: {cliente[0]}')
-                                with st.expander(f'Mostar histórico de consumo da instalação: {instalação}' ):
-                                    st.write(f'Historico: {instalação}', retorno[1])
-                                
-                                
-                                
-                                
-                                fig = px.line(retorno[1], x='Mês/Ano',y='Cons/Dem', color="Ano", hover_name='Fatura', title=f'GRÁFICO DE CONSUMO kWh/Mês {instalação}', render_mode='webgl')
-                                st.plotly_chart(fig,use_container_width=True)
-                            
-                    except:
-                        erro='Algo deu errado com o SAP, verifique!'
-                        st.error(erro, icon="🚨")
-                        sap.fechar_sap()
-        else:
-            lista_inst = st.text_input('Cole as instalações aqui:')
-            enviar= st.button('Analisar em massa')
-            
-            if enviar:
-                if lista_inst!='':
-                    
-                    lista_inst=lista_inst.split(' ')
-                    
-                try:
-                    with st.spinner('BUSCANDO DADOS DO SAP'):
-                            erro=''
-                            sap.sap_login()
-                            sap.es32()
-                            
-                            for instalação in lista_inst:
-                                retorno = sap.consultar_consumo(instalação)
-                                
-                                cliente = retorno[3].split('/')
-                                st.write(f'{instalação} --> {retorno[2]}')
-                                st.write(f'Cliente: {cliente[0]}')
-                                                    
-                                fig = px.line(retorno[1], x='Mês/Ano',y='Cons/Dem', color="Ano", hover_name='Fatura', render_mode='webgl')
-                                st.plotly_chart(fig,use_container_width=True)
-                            sap.fechar_sap()
-                except:
-                    erro='Algo deu errado com o SAP, verifique!'
-                    st.error(erro, icon="🚨")
-                    sap.fechar_sap()
-        prog = pd.DataFrame(lista_inspecao)
-        nome_arquivo = st.text_input('Escreva o nome do arquivo')
-
-       
-       
+    
     
     st.title('ANALISE DE RELATÓRIO FASORIAL')
     medidor =st.text_input('Digite o numero do medidor')
