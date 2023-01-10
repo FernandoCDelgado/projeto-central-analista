@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from sap import SapGui
+
 import plotly.express as px
 import pythoncom
 pythoncom.CoInitialize()
