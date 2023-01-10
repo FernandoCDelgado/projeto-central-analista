@@ -2,8 +2,7 @@ import streamlit as st
 import pandas as pd
 
 import plotly.express as px
-import pythoncom
-pythoncom.CoInitialize()
+
 import re
 import datetime
 import sys
